@@ -1,0 +1,47 @@
+{% extends "adminpannel/partials/adminpartials.html" %}
+{% block header %}
+{% include "adminpannel/partials/adminheader.html" %}
+{% endblock %}
+
+
+{% block sidenav %}
+{% include "adminpannel/partials/adminsidenav.html" %}
+{% endblock %}
+
+{%block content%}
+<section class="wrapper">
+    <div class="row">
+        
+        <div class="col-md-12">
+            <a href="{%url 'manageproducts' %}" class="link-primary"><i class="bi bi-caret-left"></i>go back</a>
+          <section class="panel">
+              
+            <header class="panel-heading no-border">
+                
+              <h1 style="font-weight: 700;">Product Data</h1>
+            </header>
+            <section class="panel">
+                <div class="panel-body bio-graph-info">
+                  <h1>Product Details</h1>
+                  <div class="row">
+                      <div class="col-md-6">
+                        <img style="object-fit: fill; " height="250px" width="100%" alt="{{product.product_name}}-img" src="{{product.product_picture.url}}">
+                      </div>
+                      <div class="col-md-6">
+                        <h1><span>Product Name </span>: {{product.product_name}}</h1>
+                        <h1><span>Product Price </span>: {{product.price}}</h1>
+                        <h1><span>Product Description </span>:{{product.product_description}}</h1>
+                      </div>
+                  </div>
+                  
+                </div>
+              </section>
+              
+          </section>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{%block scripts%}
+{% endblock %}

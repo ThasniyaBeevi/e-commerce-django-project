@@ -1,0 +1,85 @@
+{% extends "adminpannel/partials/adminpartials.html" %}
+{% block header %}
+{% include "adminpannel/partials/adminheader.html" %}
+{% endblock %}
+
+
+{% block sidenav %}
+{% include "adminpannel/partials/adminsidenav.html" %}
+{% endblock %}
+
+{%block content%}
+<section class="wrapper">
+    <div class="row">
+        <div class="col-md-12">
+          <section class="panel">
+            <header class="panel-heading no-border">
+              <h1 style="font-weight: 700;">Manage Users
+              </h1>
+            </header>
+            {%if users %}
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>User Name</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                  <th>View</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                {%for user in users%}
+                <tr>
+                    <td>{{user.username}}</td>
+                    <td>
+                      {% if user.is_active == 1 %}
+                      <strong id="statustextt{{user.id}}" class="text-success">Active</strong>
+                      {%else%}
+                      <strong id="statustextt{{user.id}}" class="text-danger">Inactive</strong>
+                      {%endif%}
+                    </td>
+                    <td>
+                      {% if user.is_active == 1 %}
+                      <a id="statusbtnn{{user.id}}" href="" user_id ="{{user.id}}" class="disablebtnn btn btn-sm btn-danger">Disable</a>
+                      {%else%}
+                      <a id="statusbtnn{{user.id}}" href="" user_id ="{{user.id}}" class="enablebtnn btn btn-sm btn-success">Enable</a>
+                      {%endif%}
+                    </td>
+                    <td><a  href="{% url 'viewuser' user_id=user.id %}" class="view btn btn-sm btn-primary">View</a></td>
+                    <td><a data-toggle="modal" data-target="#myModal3" user_id ="{{user.id}}" href="" class="deleteuser btn btn-sm btn-danger">Delete</a></td>
+                </tr>
+                {%endfor%}
+              </tbody>
+            </table>
+            {%else%}
+            <div class="alert alert-block alert-danger fade in">
+                <h4>There are no users to show.</h4>
+              </div>
+            {%endif%}
+          </section>
+        </div>
+    </div>
+</section>
+
+
+<div class="modal fade stick-up" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">Delete Confirmation</h4>
+      </div>
+      <div class="modal-body">
+
+        Are you sure you want to delete this user if deleted this data will no longer be available
+
+      </div>
+      <div class="modal-footer">
+        <a href="" class="btn btn-danger btn-cons  pull-left inline btn-sm" id="delete-user-button" delete-user-id="">Delete</a>
+        <button data-dismiss="modal" class="btn btn-info btn-cons no-margin pull-right inline btn-sm" type="button">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

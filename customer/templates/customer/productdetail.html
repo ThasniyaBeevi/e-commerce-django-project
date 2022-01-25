@@ -1,0 +1,85 @@
+
+{% extends "customer/partials/customerpartial.html" %}
+
+{% block searchbar %}
+{% include "customer/partials/searchbar.html" %}
+{% endblock %}
+
+{% block maincontent %}
+<div class="col-12">
+    <div class="row">
+        <div class="col-12 mt-3 text-center text-uppercase">
+            <h2 class="display-4 ">Product Details</h2>
+        </div>
+    </div>
+    <div class="row bg-secondary py-3 mb-3">
+        <div class="col-md-6">
+          <img style="object-fit: fill; " height="250px" width="100%" alt="{{product.product_name}}-img" src="{{product.product_picture.url}}">
+        </div>
+        <div class="col-md-6 text-center text-white">
+          <h2 class="display-4 pb-5">{{product.product_name}}</h2>
+          <h4 >Price : {{product.price}}</h4>
+          <p>{{product.product_description}}</p>
+          <div class="col-12 mb-3 align-self-end">
+            {% if user.is_authenticated%}
+            {% if usercart%}
+            {% for item in  usercart%}
+                {% if item.product == product %}
+                <a id="cartbtn{{product.id}}" product="{{product.id}}" href="" class="removefromcart btn btn-outline-danger"><i class="bi bi-x-lg"></i>Remove from cart</a>
+                {% else %}
+                <a id="cartbtn{{product.id}}" product="{{product.id}}" href="" class="addtocart  btn btn-outline-light"><i class="bi bi-cart-fill mr-2"></i>Add to cart</a>
+                {% endif %}
+            {% endfor %}
+            {% else %}
+                <a id="cartbtn{{product.id}}" product="{{product.id}}" href="" class="addtocart btn btn-outline-light"><i class="bi bi-cart-fill mr-2"></i>Add to cart</a>
+            {% endif %}  
+            {% endif %}   
+        </div>
+        </div>
+    </div>
+
+</div>
+{% endblock maincontent %}
+{% block scripts %}
+<script type="text/javascript">
+    $(document).on('click','.addtocart',function(e){
+        e.preventDefault();
+        var prod_id = $(this).attr('product');
+        $.ajax(
+      {
+          type: "POST",
+          url: "{%url 'addtocart'%}",
+          dataType: 'json',
+          data: {product:prod_id},
+          success: function(data) {
+            $('#cartbtn'+prod_id).toggleClass('addtocart removefromcart');
+            $('#cartbtn'+prod_id).toggleClass('btn-outline-white btn-outline-danger');
+            $('#cartbtn'+prod_id).html('<i class="bi bi-x-lg mr-2"></i>Remove from cart');
+          },
+          error: function() { 
+            alert("server error");
+          }
+      });
+    });
+
+    $(document).on('click','.removefromcart',function(e){
+        e.preventDefault();
+        var prod_id = $(this).attr('product');
+        $.ajax(
+      {
+          type: "POST",
+          url: "{%url 'removefromcart'%}",
+          dataType: 'json',
+          data: {product:prod_id},
+          success: function(data) {
+            $('#cartbtn'+prod_id).toggleClass('removefromcart addtocart');
+            $('#cartbtn'+prod_id).toggleClass('btn-outline-danger btn-outline-white');
+            $('#cartbtn'+prod_id).html('<i class="bi bi-cart-fill mr-2"></i>Add to cart');
+          },
+          error: function() { 
+            alert("server error");
+          }
+      });
+    });
+</script>
+{% endblock scripts %}

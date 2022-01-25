@@ -32,11 +32,16 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
+    'rest_framework',
+    'rest_framework.authtoken',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'adminpannel',
+    'customer',
+    'customerapi',
 ]
 
 MIDDLEWARE = [
@@ -68,6 +73,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'mashupcommrz.wsgi.application'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        
+        'rest_framework.permissions.IsAuthenticated', )
+}
 
 
 # Database
@@ -124,8 +138,10 @@ USE_TZ = True
 # The absolute path to the directory where collectstatic will collect static files for deployment.
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+
 # The URL to use when referring to static files (where they will be served from)
 STATIC_URL = '/static/'
+
 
 #Configure media files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
